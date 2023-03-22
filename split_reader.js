@@ -29,6 +29,17 @@ const DIRECTION = {
         } else if (event.altKey) {
             return DIRECTION.horizontal;
         }
+    },
+
+    inverse: (direction) => {
+        switch (direction) {
+            case DIRECTION.vertical:
+                return DIRECTION.horizontal;
+            case DIRECTION.horizontal:
+                return DIRECTION.vertical;
+            default:
+                throw new Error(`Invalid direction: ${direction}`);
+        }
     }
 };
 
@@ -104,22 +115,57 @@ function addForceReloadParam(url) {
     return url;
 }
 
+function randomId() {
+    return Math.random().toString(36).substring(2, 9);
+}
+
+const createContainer = (dr, id = null) => {
+    let c = document.createElement('div');
+    c.id = id || randomId();
+    c.className = `flex-container container-${dr}`;
+    return c;
+};
+
 /**
- * Creates an iframe for the given url and direction
+ * Creates an iframe for the given url
  *
  * @param {URL} url
- * @param {DIRECTION} direction
- * @param {PLACEMENT} placement
  * @returns {HTMLIFrameElement}
  */
-function createFrameFor(url, direction, placement) {
+function createFrameFor(url) {
     const frame = document.createElement('iframe');
-    for (const [key, value] of Object.entries(Stylers[direction](frame.style, placement))) {
-        frame.style[key] = value;
-    }
-    document.body.appendChild(frame);
+    frame.id = `${randomId()}`;
     frame.src = addForceReloadParam(url).href;
     return frame;
+}
+
+function getOrCreateContainer(frameId, direction, initialFrame) {
+    let container = document.getElementById('main_container');
+
+    if (!container) {
+        document.body.innerHTML = '';
+        document.body.style.overflow = 'hidden';
+        document.body.style.backgroundColor = '#ccc';
+
+        container = createContainer(direction, 'main_container');
+        let c = createContainer(DIRECTION.inverse(direction));
+        c.appendChild(initialFrame);
+        container.appendChild(c);
+        document.body.appendChild(container);
+    }
+    return {
+        addFrame: (url) => {
+            let frameContainer = document.getElementById(frameId)?.parentElement || container;
+            let newFrame = createFrameFor(url);
+            let c = createContainer(DIRECTION.inverse(direction));
+            c.appendChild(newFrame);
+            if (frameContainer.parentElement.classList.contains(`container-${direction}`)) {
+                frameContainer.parentElement.appendChild(c);
+            } else {
+                frameContainer.appendChild(c);
+            }
+        }
+    };
 }
 
 /**
@@ -129,23 +175,30 @@ function createFrameFor(url, direction, placement) {
  * @param {DIRECTION} direction
  */
 function openInSplitMode(anchor, direction) {
-    document.body.innerHTML = '';
     let currentUrl = new URL(window.location.href);
-    currentUrl = withTextFragment(currentUrl, anchor.innerText);
-    createFrameFor(currentUrl, direction, PLACEMENT.start);
-    createFrameFor(new URL(anchor.href), direction, PLACEMENT.end);
+    currentUrl = withTextFragment(currentUrl, anchor);
+
+    let container = getOrCreateContainer(
+        anchor.ownerDocument.defaultView.frameElement?.id,
+        direction,
+        createFrameFor(currentUrl)
+    );
+    container.addFrame(new URL(anchor.href));
 }
 
 
 /**
  *
  * @param {URL} url
- * @param {string} selection
+ * @param {HTMLAnchorElement} anchor
  * @returns {URL}
  */
-const withTextFragment = (url, selection) => {
-    return new URL(`${url.href}${url.hash ? '' : '#'}:~:text=${encodeURIComponent(selection)}`);
+const withTextFragment = (url, anchor) => {
+    //TODO: have text be the text of the parent element
+    return new URL(`${url.href}${url.hash ? '' : '#'}:~:text=${encodeURIComponent(anchor.innerText)}`);
 };
+
+
 
 /**
  * Handles the click event
@@ -158,14 +211,21 @@ function handleClick(event) {
         let direction = DIRECTION.valueFromModifiers(event);
         if (direction) {
             event.preventDefault();
+            event.stopPropagation();
             openInSplitMode(anchor, direction);
         }
-        document.body.style.overflow = 'hidden';
     }
 }
 
-document.addEventListener('click', handleClick);
-document.querySelectorAll('a')
-    .forEach(each => {
-        each.addEventListener("click", handleClick);
-    });
+/**
+ * Close iframe element if it has siblings, else close parent element
+ *
+ * @param {string} id
+ */
+function closeFrame(id) {
+    let frame = document.getElementById(id);
+    if (frame.parentElement.childElementCount === 1)
+        frame.parentElement.remove();
+    else
+        frame.remove();
+}

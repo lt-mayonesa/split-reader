@@ -13,3 +13,13 @@ document.addEventListener('keydown', event => {
         window.parent.closeFrame(window.frameElement.id);
     }
 });
+
+// document.body.addEventListener('mouseenter', event => {
+//     document.querySelector(`#wrapper_${window.frameElement?.id} .iframe-controls`)
+//         ?.classList.add('show');
+// });
+//
+// document.body.addEventListener('mouseleave', event => {
+//     document.querySelector(`#wrapper_${window.frameElement?.id} .iframe-controls`)
+//         ?.classList.remove('show');
+// });

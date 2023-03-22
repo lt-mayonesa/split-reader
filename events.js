@@ -14,12 +14,25 @@ document.addEventListener('keydown', event => {
     }
 });
 
-// document.body.addEventListener('mouseenter', event => {
-//     document.querySelector(`#wrapper_${window.frameElement?.id} .iframe-controls`)
-//         ?.classList.add('show');
-// });
-//
-// document.body.addEventListener('mouseleave', event => {
-//     document.querySelector(`#wrapper_${window.frameElement?.id} .iframe-controls`)
-//         ?.classList.remove('show');
-// });
+const wrapper = window.parent.document.querySelector(`#wrapper_${window.frameElement?.id} .iframe-controls`);
+let timeout = null;
+document.body.addEventListener('mouseenter', _ => {
+    wrapper?.classList.add('show');
+    timeout = setTimeout(() => {
+        wrapper?.classList.remove('show');
+    }, 3000);
+});
+
+document.body.addEventListener('mousemove', _ => {
+    wrapper?.classList.add('show');
+
+    if (timeout)
+        window.clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        wrapper?.classList.remove('show');
+    }, 3000);
+});
+
+document.body.addEventListener('mouseleave', _ => {
+    wrapper?.classList.remove('show');
+});

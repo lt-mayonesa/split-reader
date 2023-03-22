@@ -8,6 +8,7 @@
  * script should use css grid to split the page
  */
 
+
 /**
  * @readonly
  * @typedef {string} DIRECTION
@@ -89,7 +90,7 @@ const frames = {
 
         frames.getOrCreateContainer(
             direction,
-            frames.createFrameFor(currentUrl)
+            frames.createFrameFor(currentUrl, direction)
         ).addFrame(
             anchor.ownerDocument.defaultView.frameElement?.id,
             new URL(anchor.href)
@@ -110,17 +111,18 @@ const frames = {
      * Creates an iframe for the given url
      *
      * @param {URL} url
+     * @param {DIRECTION} direction
      * @returns {HTMLDivElement}
      */
-    createFrameFor(url) {
+    createFrameFor(url, direction) {
         const id = randomId();
         const wrapper = document.createElement('div');
         wrapper.id = `wrapper_${id}`;
         wrapper.className = 'iframe-wrapper';
-        wrapper.innerHTML = `<div class="iframe-controls">
-            <button class="btn-close"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBkPSJtMjQ5IDg0OS00Mi00MiAyMzEtMjMxLTIzMS0yMzEgNDItNDIgMjMxIDIzMSAyMzEtMjMxIDQyIDQyLTIzMSAyMzEgMjMxIDIzMS00MiA0Mi0yMzEtMjMxLTIzMSAyMzFaIi8+PC9zdmc+"/></button>
-            <button class="btn-expand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBkPSJNMjgxIDczNiAxMjEgNTc2bDE2MC0xNjAgNDMgNDMtODggODdoNDg5bC04Ny04OCA0Mi00MiAxNjAgMTYwLTE2MCAxNjAtNDItNDIgODctODgtNDg5IDEgODcgODctNDIgNDJaIi8+PC9zdmc+" /></button> 
-            <button class="btn-colapse"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBkPSJNMTIwIDkzNlYyMTZoNjB2NzIwaC02MFptMTY1LTMzMHYtNjBoNjB2NjBoLTYwWm0xNjUgMHYtNjBoNjB2NjBoLTYwWm0xNjUgMHYtNjBoNjB2NjBoLTYwWm0xNjUgMzMwVjIxNmg2MHY3MjBoLTYwWiIvPjwvc3ZnPg==" /></button> 
+        wrapper.innerHTML = `<div class="iframe-controls ${direction}">
+            <button class="btn-close no-rotate"></button>
+            <button class="btn-expand"></button> 
+            <button class="btn-colapse"></button> 
         </div>`;
         wrapper.querySelectorAll('button')
             .forEach((button, index) => {
@@ -172,7 +174,7 @@ const frames = {
                     document.getElementById(frameId), 'flex-container') || container;
                 let c = frames.createContainer({
                     direction: DIRECTION.inverse(direction),
-                    child: frames.createFrameFor(url)
+                    child: frames.createFrameFor(url, direction)
                 });
                 if (frameContainer.parentElement.classList.contains(`container-${direction}`)) {
                     frameContainer.parentElement.appendChild(c);

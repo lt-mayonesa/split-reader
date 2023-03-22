@@ -1,5 +1,7 @@
 # Split Reader
 
+![image](https://user-images.githubusercontent.com/11464844/226768919-423487cd-cc78-4bbe-9c9e-629b923d9267.png)
+
 Chrome extension for prototyping a "split reader". I.E: when you are reading documentation instead of following
 links to new tabs or windows split the current document and follow in-place.
 

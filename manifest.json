@@ -1,0 +1,27 @@
+{
+  "name": "Split Reader",
+  "description": "handle opening links in split document",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "How To - Split Reader",
+    "default_popup": "docs.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "24": "icons/icon24.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "all_frames": true,
+      "js": ["split_reader.js"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png"
+  }
+}

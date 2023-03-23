@@ -98,14 +98,14 @@ iframe {
     rotate: 0 !important;
 }
 
-.btn-close {
+#btn_close {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBkPSJtMjQ5IDg0OS00Mi00MiAyMzEtMjMxLTIzMS0yMzEgNDItNDIgMjMxIDIzMSAyMzEtMjMxIDQyIDQyLTIzMSAyMzEgMjMxIDIzMS00MiA0Mi0yMzEtMjMxLTIzMSAyMzFaIi8+PC9zdmc+");
 }
 
-.btn-expand {
+#btn_expand {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBkPSJNMjgxIDczNiAxMjEgNTc2bDE2MC0xNjAgNDMgNDMtODggODdoNDg5bC04Ny04OCA0Mi00MiAxNjAgMTYwLTE2MCAxNjAtNDItNDIgODctODgtNDg5IDEgODcgODctNDIgNDJaIi8+PC9zdmc+");
 }
 
-.btn-colapse {
+#btn_colapse {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjQ4Ij48cGF0aCBkPSJNMTIwIDkzNlYyMTZoNjB2NzIwaC02MFptMTY1LTMzMHYtNjBoNjB2NjBoLTYwWm0xNjUgMHYtNjBoNjB2NjBoLTYwWm0xNjUgMHYtNjBoNjB2NjBoLTYwWm0xNjUgMzMwVjIxNmg2MHY3MjBoLTYwWiIvPjwvc3ZnPg==");
 }

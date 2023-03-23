@@ -120,22 +120,22 @@ const frames = {
         wrapper.id = `wrapper_${id}`;
         wrapper.className = 'iframe-wrapper';
         wrapper.innerHTML = `<div class="iframe-controls ${direction}">
-            <button class="btn-close no-rotate"></button>
-            <button class="btn-expand"></button> 
-            <button class="btn-colapse"></button> 
+            <button id="btn_close" class="no-rotate"></button>
+            <button id="btn_expand"></button> 
+            <button id="btn_colapse"></button> 
         </div>`;
         wrapper.querySelectorAll('button')
             .forEach((button, index) => {
                 button.addEventListener('click', (event) => {
                     event.stopPropagation();
-                    switch (button.className) {
-                        case 'btn-close':
+                    switch (button.id) {
+                        case 'btn_close':
                             closeFrame(id);
                             break;
-                        case 'btn-expand':
+                        case 'btn_expand':
                             wrapper.parentElement.style.flexGrow = (Number(wrapper.parentElement.style.flexGrow || 1) + .5) + "";
                             break;
-                        case 'btn-colapse':
+                        case 'btn_colapse':
                             wrapper.parentElement.style.flexGrow = (Number(wrapper.parentElement.style.flexGrow || 1) - .5) + "";
                             break;
                     }
